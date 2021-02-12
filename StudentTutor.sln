@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentTutor.Core", "StudentTutor.Core\StudentTutor.Core.csproj", "{B85E6A54-41FC-4F66-8AF7-87D035D41B67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentTutor.Core", "StudentTutor.Core\StudentTutor.Core.csproj", "{B85E6A54-41FC-4F66-8AF7-87D035D41B67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentTutor.Wpf", "StudentTutor.Wpf\StudentTutor.Wpf.csproj", "{F5C66174-7CB4-4346-A80E-772E5753A286}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentTutor.Wpf", "StudentTutor.Wpf\StudentTutor.Wpf.csproj", "{F5C66174-7CB4-4346-A80E-772E5753A286}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentTutorApi", "StudentTutorApi\StudentTutorApi.csproj", "{BE0A0FF6-87E8-4648-B176-A3D05DC89E0D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desktop", "Desktop", "{FB6D1629-320F-4D0C-88DD-769E22033657}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +25,17 @@ Global
 		{F5C66174-7CB4-4346-A80E-772E5753A286}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5C66174-7CB4-4346-A80E-772E5753A286}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5C66174-7CB4-4346-A80E-772E5753A286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE0A0FF6-87E8-4648-B176-A3D05DC89E0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE0A0FF6-87E8-4648-B176-A3D05DC89E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE0A0FF6-87E8-4648-B176-A3D05DC89E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE0A0FF6-87E8-4648-B176-A3D05DC89E0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B85E6A54-41FC-4F66-8AF7-87D035D41B67} = {FB6D1629-320F-4D0C-88DD-769E22033657}
+		{F5C66174-7CB4-4346-A80E-772E5753A286} = {FB6D1629-320F-4D0C-88DD-769E22033657}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CCD9744D-BEA4-4F71-A13C-15824859D43B}

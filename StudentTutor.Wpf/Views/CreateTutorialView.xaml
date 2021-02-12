@@ -7,8 +7,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:StudentTutor.Wpf.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+             d:DesignHeight="450" d:DesignWidth="800" Background="White" FontSize="24">
+    <Grid  Margin="20">
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Tutorial Topic"/>
+                <TextBox x:Name="Topic" Width="250" Margin="25 0 0 0"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Margin="0 20 0 0">
+                <TextBlock Text="Tutorial Content"/>
+                <TextBox x:Name="Body" MinWidth="500" MinHeight="200" HorizontalAlignment="Left" Margin="60 0 0 0"/>
+            </StackPanel>
+            <Button x:Name="Submit" Content="Submit Tutorial" Background="Chartreuse" Foreground="DarkRed" HorizontalAlignment="Center" Padding="6" Margin="0 6 0 0"/>
+        </StackPanel>
 
     </Grid>
     </views:MvxWpfView>
