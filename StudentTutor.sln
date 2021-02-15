@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentTutorApi", "StudentT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desktop", "Desktop", "{FB6D1629-320F-4D0C-88DD-769E22033657}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{38BCF9AB-0528-4851-8E29-3CC4671C00D9}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "StudentTutorData", "StudentTutorData\StudentTutorData.sqlproj", "{CDAD5720-6592-4DC3-BAC7-F4B7BBE55A51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,12 @@ Global
 		{BE0A0FF6-87E8-4648-B176-A3D05DC89E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE0A0FF6-87E8-4648-B176-A3D05DC89E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE0A0FF6-87E8-4648-B176-A3D05DC89E0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDAD5720-6592-4DC3-BAC7-F4B7BBE55A51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDAD5720-6592-4DC3-BAC7-F4B7BBE55A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDAD5720-6592-4DC3-BAC7-F4B7BBE55A51}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{CDAD5720-6592-4DC3-BAC7-F4B7BBE55A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDAD5720-6592-4DC3-BAC7-F4B7BBE55A51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDAD5720-6592-4DC3-BAC7-F4B7BBE55A51}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +46,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B85E6A54-41FC-4F66-8AF7-87D035D41B67} = {FB6D1629-320F-4D0C-88DD-769E22033657}
 		{F5C66174-7CB4-4346-A80E-772E5753A286} = {FB6D1629-320F-4D0C-88DD-769E22033657}
+		{CDAD5720-6592-4DC3-BAC7-F4B7BBE55A51} = {38BCF9AB-0528-4851-8E29-3CC4671C00D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CCD9744D-BEA4-4F71-A13C-15824859D43B}
