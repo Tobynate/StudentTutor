@@ -65,4 +65,13 @@
   <ItemGroup>
     <None Include="PublishLocation\StudentTutorData.publish.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\UserData.sql" />
+    <Build Include="dbo\Stored Procedures\UserData_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\UserData_GetAll.sql" />
+    <Build Include="dbo\Stored Procedures\UserData_GetUser.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="StudentTutorData.refactorlog" />
+  </ItemGroup>
 </Project>
