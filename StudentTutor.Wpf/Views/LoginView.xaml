@@ -1,0 +1,27 @@
+﻿<views:MvxWpfView
+    xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+    xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Binding;assembly=MvvmCross.Platforms.Wpf"
+ x:Class="StudentTutor.Wpf.Views.LoginView"    
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:StudentTutor.Wpf.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800" Background="White" FontSize="24">
+    
+    <StackPanel Orientation="Vertical" Margin="100 60">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="True" Height="{Binding ErrorViewerHeight, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=32}" MaxHeight="32" Margin="0 0 0 10"  mvx:Bi.nd="Visible VMProperty, UpdateSourceTrigger=PropertyChanged, Mode=OneWay">
+            <TextBlock Text="{Binding ErrorMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Foreground="Red" HorizontalAlignment="Center" TextWrapping="Wrap"/>
+        </ScrollViewer>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Username"/>
+            <TextBox Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="350" Height="40" Margin="30 0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0 50">
+            <TextBlock Text="Password"/>
+            <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" Width="350" Height="40" Margin="30 0"/>
+        </StackPanel>
+        <Button mvx:Bi.nd="Command Submit;" IsEnabled="{Binding Path=SubmitEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="SUBMIT" Background="FloralWhite" Foreground="CornflowerBlue" BorderThickness="0" HorizontalAlignment="Center" Padding="20 6"/>
+    </StackPanel>
+</views:MvxWpfView>

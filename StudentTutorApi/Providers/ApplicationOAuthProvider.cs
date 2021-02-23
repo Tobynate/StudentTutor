@@ -35,7 +35,7 @@ namespace StudentTutorApi.Providers
 
             if (user == null)
             {
-                context.SetError("invalid_grant", "The user name or password is incorrect.");
+                context.SetError("invalid_grant", "The username or password is incorrect.");
                 return;
             }
 
@@ -56,8 +56,8 @@ namespace StudentTutorApi.Providers
             {
                 context.AdditionalResponseParameters.Add(property.Key, property.Value);
             }
-
-            return Task.FromResult<object>(null);
+            var output = Task.FromResult<object>(null);
+            return output;
         }
 
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
