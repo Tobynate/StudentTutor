@@ -19,5 +19,14 @@ namespace StudentTutorApi.Library.DataAccess
 
             return output;
         }
+
+        public void UpdatePassport(string Id, byte[] Passport)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var p = new { Id, Passport };
+            sql.SaveData<dynamic>("dbo.UserData_Passport_Update", p, "StudentTutorDb");
+            
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace StudentTutorApi.Controllers
     //[RoutePrefix("api/User")]
     public class UserController : ApiController
     {
+        [HttpGet]
         public IHttpActionResult GetById()
         {
             string userId = RequestContext.Principal.Identity.GetUserId();
@@ -22,7 +23,6 @@ namespace StudentTutorApi.Controllers
 
             return Ok(data.GetUserById(userId));
         }
-
         
     }
 }

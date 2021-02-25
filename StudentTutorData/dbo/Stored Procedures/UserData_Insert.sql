@@ -4,7 +4,7 @@
 	@FirstName nvarchar(255),
 	@Address nvarchar(MAX),
 	@SubjectInterest nvarchar(MAX),
-	@Passport nvarchar(255),
+	@Passport image,
 	@EmailAddress nvarchar(255)
 AS
 BEGIN

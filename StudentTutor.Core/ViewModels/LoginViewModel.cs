@@ -1,7 +1,9 @@
 ﻿using MvvmCross.Commands;
+using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
-using StudentTutor.Core.Helpers;
+using StudentTutor.Core.Helpers.Interfaces;
 using StudentTutor.Core.Models;
+using StudentTutor.Core.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Security;
@@ -13,14 +15,18 @@ namespace StudentTutor.Core.ViewModels
     public class LoginViewModel : MvxViewModel
     {
         private readonly IApiHelper _apiHelper;
-        public LoginViewModel( IApiHelper apiHelper)
+        private readonly IMvxNavigationService _mvxNavigation;
+
+        public LoginViewModel( IApiHelper apiHelper, IMvxNavigationService mvxNavigation)
         {
             _apiHelper = apiHelper;
-
+            _mvxNavigation = mvxNavigation;
             FixHeight();
+            Username = "nathanieltoby99@Gmail.com";
             Submit = new MvxAsyncCommand(SubmitCommand);
             SubmitEnabled = CanSubmitCommand();
         }
+
         private string _username;
 
         public string Username
@@ -87,6 +93,10 @@ namespace StudentTutor.Core.ViewModels
             try
             {
                 var result = await _apiHelper.Authenticate(Username, SecurePassword);
+
+                await _apiHelper.GetLoggedInUserData(result.Access_Token);
+
+                await _mvxNavigation.Navigate<CreateTutorialViewModel>();
             }
             catch (Exception ex)
             {

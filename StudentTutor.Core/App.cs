@@ -2,7 +2,9 @@
 using MvvmCross.IoC;
 using MvvmCross.ViewModels;
 using StudentTutor.Core.Helpers;
+using StudentTutor.Core.Helpers.Interfaces;
 using StudentTutor.Core.Models;
+using StudentTutor.Core.Models.Interfaces;
 using StudentTutor.Core.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -19,7 +21,9 @@ namespace StudentTutor.Core
 
            // Mvx.IoCProvider.RegisterType<ILoginInputModel, LoginInputModel>();
             Mvx.IoCProvider.LazyConstructAndRegisterSingleton<IApiHelper, ApiHelper>();
+            Mvx.IoCProvider.LazyConstructAndRegisterSingleton<ILoggedInUserModel, LoggedInUserModel>();
 
+            
             //CreatableTypes().EndingWith("Services").AsInterfaces().RegisterAsLazySingleton
         }
     }
