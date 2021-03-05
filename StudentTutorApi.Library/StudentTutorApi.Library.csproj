@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="DataAccess\Internal\SqlDataAccess.cs" />
     <Compile Include="DataAccess\UserData.cs" />
+    <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

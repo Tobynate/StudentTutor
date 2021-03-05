@@ -67,7 +67,7 @@ namespace StudentTutor.Core.Helpers
             using (HttpResponseMessage response = await apiClient.PostAsync("/token", data))
             {
                 if (response.IsSuccessStatusCode)
-                {//TODO continue from here
+                {
                     var result = await response.Content.ReadAsAsync<AuthenticatedUser>();
                     return result;
                 }
@@ -77,7 +77,25 @@ namespace StudentTutor.Core.Helpers
                 }
             }
         }
+        
+        public async Task<byte> AddDefaultRole(string token)
+        {
+            byte isSuccess = 0;
+            InitializeClientWithAuth(apiClient, "application/json", new Dictionary<string, string>() { { "auth", "Authorization" }, { "token", $"Bearer {token}" } });
+            using (HttpResponseMessage response = await apiClient.GetAsync("/api/Account/DefaultRole_Add"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    isSuccess = 1;
+                    return isSuccess;
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
 
+        }
         public async Task GetLoggedInUserData(string token)
         {
             InitializeClientWithAuth(apiClient, "application/json", new Dictionary<string, string>() { { "auth", "Authorization" }, { "token", $"Bearer {token}" } });

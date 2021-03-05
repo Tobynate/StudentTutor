@@ -36,6 +36,7 @@ namespace StudentTutorApi.Models
     {
         [Required]
         [Display(Name = "Email")]
+        [EmailAddress(ErrorMessage = "The email address is not a valid email sddress")]
         public string Email { get; set; }
 
         [Required]
@@ -48,6 +49,19 @@ namespace StudentTutorApi.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        [Phone(ErrorMessage = "The phone number is not a valid phone number.")]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+    }
+
+    public class ConfirmEmailBindingModel
+    {
+        [Required]
+        [Display(Name = "UserId")]
+        public string UserId { get; set; }
+        [Required]
+        [Display(Name = "Access_Token")]
+        public string AccessToken { get; set; }
     }
 
     public class RegisterExternalBindingModel

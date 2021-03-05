@@ -10,5 +10,7 @@ namespace StudentTutor.Core.Helpers.Interfaces
         Task<AuthenticatedUser> Authenticate(string username, SecureString password);
 
         Task GetLoggedInUserData(string token);
+
+        Task<byte> AddDefaultRole(string token);
     }
 }

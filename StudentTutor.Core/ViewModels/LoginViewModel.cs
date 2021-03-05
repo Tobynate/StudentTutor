@@ -93,6 +93,8 @@ namespace StudentTutor.Core.ViewModels
             try
             {
                 var result = await _apiHelper.Authenticate(Username, SecurePassword);
+                
+                byte returnValue = await _apiHelper.AddDefaultRole(result.Access_Token);
 
                 await _apiHelper.GetLoggedInUserData(result.Access_Token);
 

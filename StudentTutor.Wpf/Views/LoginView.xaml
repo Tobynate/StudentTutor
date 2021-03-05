@@ -23,5 +23,9 @@
             <PasswordBox PasswordChanged="PasswordBox_PasswordChanged" Width="350" Height="40" Margin="30 0"/>
         </StackPanel>
         <Button mvx:Bi.nd="Command Submit;" IsEnabled="{Binding Path=SubmitEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="SUBMIT" Background="FloralWhite" Foreground="CornflowerBlue" BorderThickness="0" HorizontalAlignment="Center" Padding="20 6"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin=" 0 0 5 0">
+            <TextBlock Text="Don't have an account yet? " FontSize="14" VerticalAlignment="Center"/>
+            <Button mvx:Bi.nd="Command SignUp;" Content="Sign Up" Background="Transparent" Foreground="Red" FontSize="14" BorderThickness="0"/>
+        </StackPanel>
     </StackPanel>
 </views:MvxWpfView>

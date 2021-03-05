@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
+using StudentTutorApi.Library.Models;
 using StudentTutorApi.Models;
 using StudentTutorApi.Providers;
 using StudentTutorApi.Results;
@@ -192,6 +193,7 @@ namespace StudentTutorApi.Controllers
         }
 
         // POST api/Account/RemoveLogin
+        [Authorize(Roles = "MANAGER")]
         [Route("RemoveLogin")]
         public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
         {
@@ -321,16 +323,48 @@ namespace StudentTutorApi.Controllers
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        public async Task<IHttpActionResult> Register(RegisterBindingModel model, string password)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+           
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+            var IsSucess = await ConfirmEmailLogic(user, password);
+
+            return Ok();
+        }
+
+        private async Task<IHttpActionResult> ConfirmEmailLogic(ApplicationUser user, string password)
+        {
+            var token = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            var confirmationLink = Url.Link("Default", new { Controller = "Email", Action = "ConfirmEmail", token, email = user.Email });
+            EmailHelper emailHelper = new EmailHelper();
+            bool emailResponse = emailHelper.SendEmail(user.Email, confirmationLink, password);
+
+            if (emailResponse)
+            {
+                return Redirect("Index");
+            }
+            return Ok<bool>(false);
+        }
+        [Route("ConfirmEmail")]
+        public async Task<IHttpActionResult> ConfirmEmail(ConfirmEmailBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            IdentityResult result = await UserManager.ConfirmEmailAsync(model.UserId, model.AccessToken);
 
             if (!result.Succeeded)
             {
@@ -339,7 +373,59 @@ namespace StudentTutorApi.Controllers
 
             return Ok();
         }
+        [HttpPost]
+        [Authorize(Roles = "ADMIN")]
+        [Route("AddUserToRole")]
+        public  async Task<IHttpActionResult> AddUserToRole(RoleModel model)
+        {
+            return Ok(await AddToRoleLogic(model.UserId, model.RoleName));
+        }
+        [HttpGet]
+        [Route("DefaultRole_Add")]
+        public async Task<IHttpActionResult> DefaultRole_Add()
+        {
+            string userId = RequestContext.Principal.Identity.GetUserId();
+            List<string> roles = (List<string>)UserManager.GetRolesAsync(userId).Result;
+            if (roles.Count > 0)
+            {
+                return Ok();
+            }
+            else
+            {
+                await AddToRoleLogic(userId, "STUDENT");
+            }
+            return Ok();
+        }
+        internal async Task<IHttpActionResult> AddToRoleLogic(string userId, string roleName)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
 
+                if (!RequestContext.Principal.IsInRole(roleName))
+                {
+                    IdentityResult result = await UserManager.AddToRoleAsync(userId, roleName);
+                    if (!result.Succeeded)
+                    {
+                        return GetErrorResult(result);
+                    }
+                }
+                else
+                {
+                    throw new Exception("The User is already in this role.");
+                }
+                
+                return Ok();
+            }
+        }
+        [HttpGet]
+        [Route("GetUserRoles")]
+        public async Task<IHttpActionResult> GetUserRoles(string userId)
+        {             
+            return Ok(await UserManager.GetRolesAsync(userId));
+        }
+        
         // POST api/Account/RegisterExternal
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
