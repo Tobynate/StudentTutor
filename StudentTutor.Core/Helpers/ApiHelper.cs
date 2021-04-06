@@ -1,9 +1,11 @@
-﻿using StudentTutor.Core.Helpers.Interfaces;
+﻿using Microsoft.Extensions.Configuration;
+using StudentTutor.Core.Helpers.Interfaces;
 using StudentTutor.Core.Models;
 using StudentTutor.Core.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
@@ -24,10 +26,34 @@ namespace StudentTutor.Core.Helpers
             InitializeClient();
             _loggedInUser = loggedInUser;
         }
+        private IConfiguration _config = AddConfiguration();
+
+        public IConfiguration Configuration
+        {
+            get { return _config; }
+            set 
+            {
+                _config = value; 
+            }
+        }
+
+        private static IConfiguration AddConfiguration()
+        {
+            DirectoryInfo path = Directory.GetParent(Directory.GetCurrentDirectory());
+            string p = path.FullName + "\\netcoreapp3.1\\AppSettings";
+            IConfigurationBuilder builder = new ConfigurationBuilder().SetBasePath(Directory.GetParent(Directory.GetCurrentDirectory()).FullName + "\\netcoreapp3.1\\AppSettings").AddJsonFile("appsettings.json");
+#if DEBUG
+            builder.AddJsonFile("appsettings.development.json", optional: true, reloadOnChange: true);
+#else
+            builder.AddJsonFile("appsettings.production.json", optional: true, reloadOnChange: true);
+#endif
+            return builder.Build();
+        }
         private void InitializeClient()
         {
             apiClient = new HttpClient();
-            apiClient.BaseAddress = new Uri("https://localhost:44332/");
+            //apiClient.BaseAddress = new Uri("https://localhost:44332/");
+            apiClient.BaseAddress = new Uri(Configuration.GetValue<string>("api"));
             apiClient.DefaultRequestHeaders.Accept.Clear();
             apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }

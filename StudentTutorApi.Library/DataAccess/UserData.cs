@@ -12,10 +12,10 @@ namespace StudentTutorApi.Library.DataAccess
     {
         public List<UserModel> GetUserById(string Id)
         {
-            SqlDataAccess sql = new SqlDataAccess();
+            SqlDataAccess sqlDataAccess = new SqlDataAccess();
 
             var p = new { Id };
-            var output = sql.LoadData<UserModel, dynamic>("dbo.UserData_GetUser", p, "StudentTutorDb");
+            var output = sqlDataAccess.LoadData<UserModel, dynamic>("dbo.UserData_GetUser", p, "StudentTutorDb");
 
             return output;
         }

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StudentTutorApi.Library.DataAccess;
+using Microsoft.Extensions.Configuration;
+using StudentTutorApi.Core.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +13,20 @@ namespace TutorsNetworkApi.Controllers.User
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
+        private readonly IConfiguration _config;
+
+        public UserController(IConfiguration config)
+        {
+            this._config = config;
+        }
         [HttpGet]
         public IActionResult GetById()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            UserData data = new UserData();
+            UserData data = new UserData(_config);
 
             return Ok(data.GetUserById(userId));
         }

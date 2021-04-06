@@ -19,7 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{7B24BDDB-20D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentTutorApi.Library", "StudentTutorApi.Library\StudentTutorApi.Library.csproj", "{BB43CEFD-58A7-4726-815F-E5BA1AB279E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorsNetworkApi", "TutorsNetworkApi\TutorsNetworkApi.csproj", "{5C6B4528-4968-445D-9631-897DE83D1DFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TutorsNetworkApi", "TutorsNetworkApi\TutorsNetworkApi.csproj", "{5C6B4528-4968-445D-9631-897DE83D1DFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentTutorApi.Core", "StudentTutorApi.Core\StudentTutorApi.Core.csproj", "{88A42AD6-AADC-4780-AE35-D4BCF186EA9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{5C6B4528-4968-445D-9631-897DE83D1DFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C6B4528-4968-445D-9631-897DE83D1DFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C6B4528-4968-445D-9631-897DE83D1DFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88A42AD6-AADC-4780-AE35-D4BCF186EA9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88A42AD6-AADC-4780-AE35-D4BCF186EA9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88A42AD6-AADC-4780-AE35-D4BCF186EA9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88A42AD6-AADC-4780-AE35-D4BCF186EA9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{CDAD5720-6592-4DC3-BAC7-F4B7BBE55A51} = {38BCF9AB-0528-4851-8E29-3CC4671C00D9}
 		{BB43CEFD-58A7-4726-815F-E5BA1AB279E3} = {7B24BDDB-20D7-4EE8-A6C9-FC8A3C64861A}
 		{5C6B4528-4968-445D-9631-897DE83D1DFC} = {7B24BDDB-20D7-4EE8-A6C9-FC8A3C64861A}
+		{88A42AD6-AADC-4780-AE35-D4BCF186EA9D} = {7B24BDDB-20D7-4EE8-A6C9-FC8A3C64861A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CCD9744D-BEA4-4F71-A13C-15824859D43B}

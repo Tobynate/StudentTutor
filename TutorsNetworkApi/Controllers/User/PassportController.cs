@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StudentTutorApi.Library.DataAccess;
+using Microsoft.Extensions.Configuration;
+using StudentTutorApi.Core.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,12 @@ namespace TutorsNetworkApi.Controllers.User
     [ApiController]
     public class PassportController : ControllerBase
     {
+        private readonly IConfiguration _config;
+
+        public PassportController(IConfiguration config)
+        {
+            this._config = config;
+        }
         [HttpPut]
         public IActionResult UpdateUserPassport(byte[] passport)
         {
@@ -21,7 +28,7 @@ namespace TutorsNetworkApi.Controllers.User
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            UserData data = new UserData();
+            UserData data = new UserData(_config);
             data.UpdatePassport(userId, passport);
 
             return Ok();

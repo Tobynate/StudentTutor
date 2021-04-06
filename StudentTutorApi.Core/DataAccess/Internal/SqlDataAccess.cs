@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,14 +7,20 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
-namespace StudentTutorApi.Library.DataAccess.Internal
+namespace StudentTutorApi.Core.DataAccess.Internal
 {
     internal class SqlDataAccess
     {
+        private readonly IConfiguration _config;
+
+        public SqlDataAccess(IConfiguration config)
+        {
+            this._config = config;
+        }
         private string GetConnectionString(string name)
         {
-            var data = ConfigurationManager.ConnectionStrings[name].ConnectionString;
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+           // var data = _config.GetConnectionString(name);
+            return _config.GetConnectionString(name); //ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
 
         public List<T> LoadData<T, U>(string storedProcedure, U parameter, string connectionString)
