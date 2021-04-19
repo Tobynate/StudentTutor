@@ -26,6 +26,7 @@ namespace StudentTutor.Core.ViewModels
             Username = "nathanieltoby99@Gmail.com";
             Submit = new MvxAsyncCommand(SubmitCommand);
             SubmitEnabled = CanSubmitCommand();
+            SignUp = new MvxAsyncCommand(SignUpCommand);
         }
 
         private string _username;
@@ -115,6 +116,11 @@ namespace StudentTutor.Core.ViewModels
             }
         }
 
+        public async Task SignUpCommand()
+        {
+            await _mvxNavigation.Navigate<RegisterUserViewModel>();
+        }
+
         private bool _submitEnabled;
 
         public bool SubmitEnabled
@@ -139,6 +145,8 @@ namespace StudentTutor.Core.ViewModels
         {
             get; set;
         }
+
+        public IMvxCommand SignUp { get; set; }
 
         private string _errorMessage;
 

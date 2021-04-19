@@ -24,6 +24,7 @@ namespace TutorsNetworkApi.Controllers
             var output = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             return output;
         }
+        [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
             var user = await _userManager.FindByEmailAsync(email);

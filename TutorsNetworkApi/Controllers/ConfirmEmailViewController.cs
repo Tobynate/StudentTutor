@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace TutorsNetworkApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    //[Route("api/[controller]")]
+    //[ApiController]
     public class ConfirmEmailViewController : ControllerBase
     {
         // GET: ConfirmEmailView

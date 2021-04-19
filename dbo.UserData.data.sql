@@ -1,0 +1,1 @@
+﻿INSERT INTO [dbo].[UserData] ([Id], [LastName], [FirstName], [Address], [SubjectOfInterest], [Passport], [EmailAddress], [CreatedDate]) VALUES (N'd30ee103-2c66-46e3-83a5-a64ec8df726a', N'Toby', N'Nathaniel', N'No 2, Akobo', NULL, <SQLVARIANT>, N'nathanieltoby99@gmail.com', N'2021-04-06 15:14:16')

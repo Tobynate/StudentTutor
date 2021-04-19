@@ -4,6 +4,7 @@ using StudentTutorApi.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace StudentTutorApi.Core.DataAccess
 {
@@ -23,6 +24,14 @@ namespace StudentTutorApi.Core.DataAccess
             var output = sqlDataAccess.LoadData<UserModel, dynamic>("dbo.UserData_GetUser", p, "UsersConnection");
 
             return output;
+        }
+
+        public async Task SaveUser(UserAccountBindingModel userAccount)
+        {
+            SqlDataAccess sql = new SqlDataAccess(_config);
+
+            var p = new { userAccount.Address, userAccount.CreatedDate, userAccount.EmailAddress, userAccount.FirstName, userAccount.Id, userAccount.LastName, userAccount.Passport, userAccount.SubjectOfInterest };
+            await Task.Run(() => sql.SaveData<dynamic>("dbo.UserData_Insert", p, "UsersConnection"));
         }
 
         public void UpdatePassport(string Id, byte[] Passport)

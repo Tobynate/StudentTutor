@@ -108,7 +108,7 @@ namespace StudentTutor.Core.Helpers
         {
             byte isSuccess = 0;
             InitializeClientWithAuth(apiClient, "application/json", new Dictionary<string, string>() { { "auth", "Authorization" }, { "token", $"Bearer {token}" } });
-            using (HttpResponseMessage response = await apiClient.GetAsync("/api/Account/DefaultRole_Add"))
+            using (HttpResponseMessage response = await apiClient.PostAsync("api/User/DefaultRole_Add", null))
             {
                 if (response.IsSuccessStatusCode)
                 {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using StudentTutorApi.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,12 @@ namespace TutorsNetworkApi.Controllers
     //[Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    [Route("api/[Controller]/[Action]")]
+    [Route("api/[Controller]")]
     public class AccountController : ControllerBase
     {
         private const string LocalLoginProvider = "Local";
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _config;
         private UserManager<IdentityUser> _userManager;
          
         public AccountController()
@@ -32,17 +34,19 @@ namespace TutorsNetworkApi.Controllers
         }
 
         public AccountController(UserManager<IdentityUser> userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, ApplicationDbContext context)
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, ApplicationDbContext context, IConfiguration configuration)
         {
             _userManager = userManager;
             AccessTokenFormat = accessTokenFormat;
             _context = context;
+            this._config = configuration;
         }
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
         
         // POST api/Account/ChangePassword
         [Route("ChangePassword")]
+        [HttpPut]
         public async Task<IActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -64,6 +68,7 @@ namespace TutorsNetworkApi.Controllers
         // POST api/Account/SetPassword
         [Route("SetPassword")]
         [Authorize(Roles = "ADMIN")]
+        [HttpPut]
         public async Task<IActionResult> SetPassword(SetPasswordBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -85,10 +90,10 @@ namespace TutorsNetworkApi.Controllers
             var output = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             return output;
         }
-         
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
+        [HttpPost]
         public async Task<IActionResult> Register(RegisterBindingModel model, string password)
         {
             if (!ModelState.IsValid)
@@ -113,7 +118,7 @@ namespace TutorsNetworkApi.Controllers
         {
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var confirmationLink = Url.Link("Default", new { Controller = "Email", Action = "ConfirmEmail", token, email = user.Email });
-            EmailHelper emailHelper = new EmailHelper();
+            EmailHelper emailHelper = new EmailHelper(_config);
             bool emailResponse = emailHelper.SendEmail(user.Email, confirmationLink, password);
 
             if (emailResponse)
@@ -123,6 +128,7 @@ namespace TutorsNetworkApi.Controllers
             return new ObjectResult(false);
         }
         [Route("ConfirmEmail")]
+        [HttpPut]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -146,21 +152,7 @@ namespace TutorsNetworkApi.Controllers
         {
             return Ok(await AddToRoleLogic(model.UserId, model.RoleName));
         }
-        [HttpGet]
-        [Route("DefaultRole_Add")]
-        public async Task<IActionResult> DefaultRole_Add()
-        {
-            List<string> roles = (List<string>)_userManager.GetRolesAsync(await CurrentUser()).Result;
-            if (roles.Count > 0)
-            {
-                return Ok();
-            }
-            else
-            {
-                await AddToRoleLogic(CurrentUser().Result.Id, "STUDENT");
-            }
-            return Ok();
-        }
+        
         internal async Task<IActionResult> AddToRoleLogic(string userId, string roleName)
         {           
             //var userStore = new UserStore<ApplicationUser>(_context);
@@ -188,18 +180,18 @@ namespace TutorsNetworkApi.Controllers
             return Ok(await _userManager.GetRolesAsync(await CurrentUser()));
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing && _userManager != null)
-            {
-                _userManager.Dispose();
-                _userManager = null;
-            }
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-        }
+        //protected virtual void Dispose(bool disposing)
+        //{
+        //    if (disposing && _userManager != null)
+        //    {
+        //        _userManager.Dispose();
+        //        _userManager = null;
+        //    }
+        //}
+        //public void Dispose()
+        //{
+        //    Dispose(true);
+        //}
         #region Helpers
 
         private IActionResult GetErrorResult(IdentityResult result)

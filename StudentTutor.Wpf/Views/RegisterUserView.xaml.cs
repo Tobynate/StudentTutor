@@ -1,7 +1,15 @@
-﻿using MvvmCross.Platforms.Wpf.Views;
+﻿using Microsoft.Win32;
+using MvvmCross.Base;
+using MvvmCross.Binding.BindingContext;
+using MvvmCross.Platforms.Wpf.Views;
+using MvvmCross.ViewModels;
+using StudentTutor.Core.Models;
+using StudentTutor.Core.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -22,6 +30,45 @@ namespace StudentTutor.Wpf.Views
         public RegisterUserView()
         {
             InitializeComponent();
+            var set = this.CreateBindingSet<RegisterUserView, RegisterUserViewModel>();
+            set.Bind(this).For(view => view.Interaction).To(viewModel => viewModel.Interaction).OneWay();
+            set.Apply();
         }
+        private IMvxInteraction<FileDialogInteraction> _interaction;
+        public IMvxInteraction<FileDialogInteraction> Interaction
+        {
+            get => _interaction;
+            set
+            {
+                if (_interaction != null)
+                    _interaction.Requested -= OnInteractionRequested;
+
+                if(value != null)
+                {
+                    _interaction = value;
+                    _interaction.Requested += OnInteractionRequested;
+                }
+            }
+        }
+        private async void OnInteractionRequested(object sender, MvxValueEventArgs<FileDialogInteraction> eventArgs)
+        {
+            var dialogInteraction = eventArgs.Value;
+            // show dialog
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            //Image files (*.bmp, *.jpg)|*.bmp;*.jpg|All files (*.*)|*.*\"'
+            openFileDialog.Filter = "Image files(*.jpg, *.jpeg, *.png)| *.jpg;*.jpeg;*.png";
+            openFileDialog.Title = "Pick a passport picture";
+
+            var status = openFileDialog.ShowDialog();
+
+            if ((bool)status)
+            {
+                dialogInteraction.File = new FileInfo(openFileDialog.FileName);
+                dialogInteraction.SelectedFile(status == true);
+            }
+        }
+        
+
     }
 }

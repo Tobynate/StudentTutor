@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentTutor.Wpf"
         mc:Ignorable="d"
-        Title="Student Tutor" Height="550" Width="800">
+        Title="Student Tutor" Height="550" Width="850">
     <Grid>
         
     </Grid>
