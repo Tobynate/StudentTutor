@@ -4,7 +4,6 @@
     [LastName] NVARCHAR(255) NOT NULL, 
     [FirstName] NVARCHAR(255) NOT NULL, 
     [Address] NVARCHAR(MAX) NOT NULL, 
-    [SubjectOfInterest] NVARCHAR(MAX) NULL, 
     [Passport] IMAGE NULL, 
     [EmailAddress] NVARCHAR(255) NOT NULL, 
     [CreatedDate] DATETIME2 NOT NULL DEFAULT getutcdate()

@@ -7,4 +7,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="SubjectOfInterest" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="1f437066-810e-47f6-984d-c8cb5b9fb14a" ChangeDateTime="04/19/2021 16:33:42">
+    <Property Name="ElementName" Value="[dbo].[FK_User_SubjectOfInterest_]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[User_SubjectOfInterest]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_User_SubjectOfInterest_UserData]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e6dd6650-7340-4980-8d00-da6ffeb774c8" ChangeDateTime="04/19/2021 16:37:08">
+    <Property Name="ElementName" Value="[dbo].[FK_User_SubjectOfInterest_ToTable]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[User_SubjectOfInterest]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_User_SubjectOfInterest_SubjectOfInterest]" />
+  </Operation>
 </Operations>
