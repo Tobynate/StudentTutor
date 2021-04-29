@@ -18,13 +18,15 @@ namespace StudentTutor.Core.Helpers
     public class ApiHelper : IApiHelper
     {
         private readonly ILoggedInUserModel _loggedInUser;
+        private readonly ISubjectOfInterestModelList _subjectsOfInterest;
 
         private HttpClient apiClient { get; set; }
 
-        public ApiHelper(ILoggedInUserModel loggedInUser)
+        public ApiHelper(ILoggedInUserModel loggedInUser, ISubjectOfInterestModelList subjectsOfInterest)
         {
             InitializeClient();
             _loggedInUser = loggedInUser;
+            this._subjectsOfInterest = subjectsOfInterest;
         }
         private IConfiguration _config = AddConfiguration();
 
@@ -62,7 +64,10 @@ namespace StudentTutor.Core.Helpers
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType));
-            client.DefaultRequestHeaders.Add(authorization["auth"], authorization["token"]);
+            if (authorization != null)
+            {
+                client.DefaultRequestHeaders.Add(authorization["auth"], authorization["token"]);
+            }
             return client;
         }
 
@@ -120,7 +125,33 @@ namespace StudentTutor.Core.Helpers
                     throw new Exception(response.ReasonPhrase);
                 }
             }
+        }
+        public async Task GetSubjectOfInterest()
+        {
+            InitializeClientWithAuth(apiClient, "application/json", null);
+            using (HttpResponseMessage response = await apiClient.GetAsync("api/User/GetSubjectOfInterest"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<List<SubjectOfInterestModel>>();
 
+                    if (result?.Count > 0)
+                    {
+                        foreach (SubjectOfInterestModel subjectOfInterest in result)
+                        {
+                            _subjectsOfInterest.SubjectOfInterestModels.Add(subjectOfInterest);
+                        } 
+                    }
+                    else
+                    {
+                        throw new Exception("This query returned a null or empty object");
+                    }
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+            }
         }
         public async Task GetLoggedInUserData(string token)
         {

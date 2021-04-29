@@ -14,26 +14,45 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using StudentTutor.Core.Models;
 using System.Drawing;
+using StudentTutor.Core.Models.Interfaces;
+using StudentTutor.Core.Helpers.Interfaces;
+using System.Linq;
 
 namespace StudentTutor.Core.ViewModels
 {
     public class RegisterUserViewModel : MvxViewModel
     {
-        
-        public RegisterUserViewModel()
+        private readonly ISubjectOfInterestModelList _subjectsOfInterest;
+        private readonly ISubjectOfInterestModel _subjectOfInterestModel;
+        private readonly IApiHelper _apiHelper;
+
+        public RegisterUserViewModel(ISubjectOfInterestModelList subjectsOfInterestModel, ISubjectOfInterestModel subjectOfInterestModel, IApiHelper apiHelper)
         {
+            this._apiHelper = apiHelper;
             Passport = GetImage(Resources.Female_Icon, Passport);
 
             OperatingSystem operatingSystem = Environment.OSVersion;
 
             Upload = new MvxCommand(UploadCommand);
+            this._subjectsOfInterest = subjectsOfInterestModel;
+            this._subjectOfInterestModel = subjectOfInterestModel;
 
+            Task.Run(() => GetSubjectOfInterest()).Wait();
+
+            SubjectsAndNotes = new BindingList<SubjectOfInterestModel>(_subjectsOfInterest.SubjectOfInterestModels);
+            
+        }
+        private async Task GetSubjectOfInterest()
+        {
+            await _apiHelper.GetSubjectOfInterest();
         }
         private MvxInteraction<FileDialogInteraction> _interaction = new MvxInteraction<FileDialogInteraction>();
 
         public IMvxInteraction<FileDialogInteraction> Interaction => _interaction;
 
         public MvxCommand Upload { get; set; }
+
+
         #region
         /// <summary>
         /// This region handles the emptying of textboxes on focus and repopulating on Lostfocus
@@ -106,6 +125,7 @@ namespace StudentTutor.Core.ViewModels
 
 
         #endregion
+
 
         private void UploadCommand()
         {
@@ -214,9 +234,20 @@ namespace StudentTutor.Core.ViewModels
                 SetProperty(ref _passport, value);
             }
         }
-        private string _subjectOfInterest = "Subject of interest...";
+               
+        private BindingList<SubjectOfInterestModel> _subjectsAndNotes;
 
-        public string SubjectOfInterest
+        public BindingList<SubjectOfInterestModel> SubjectsAndNotes
+        {
+            get { return _subjectsAndNotes; }
+            set
+            {
+                SetProperty(ref _subjectsAndNotes, value); 
+            }
+        }
+        private BindingList<SubjectOfInterestModel> _subjectOfInterest = new BindingList<SubjectOfInterestModel>();
+
+        public BindingList<SubjectOfInterestModel> SubjectOfInterest
         {
             get { return _subjectOfInterest; }
             set 
@@ -224,7 +255,54 @@ namespace StudentTutor.Core.ViewModels
                 SetProperty(ref _subjectOfInterest, value);
             }
         }
-        
+        int checker = -1;
+
+        private SubjectOfInterestModel _selectedSubjectsAndNote;
+
+        public SubjectOfInterestModel SelectedSubjectsAndNote
+        {
+            get { return _selectedSubjectsAndNote; }
+            set 
+            {
+                SetProperty(ref _selectedSubjectsAndNote, value);
+
+                if (SelectedSubjectsAndNote != null)
+                {
+                    SubjectsAndNotes.Remove(SelectedSubjectsAndNote);
+                    SubjectOfInterest.Add(SelectedSubjectsAndNote);
+                }
+
+                //PopulateSubjectOfInterest();
+            }
+        }
+        private void PopulateSubjectOfInterest()
+        {
+            SubjectOfInterest.AllowEdit = true;
+           
+            foreach (SubjectOfInterestModel item in SubjectOfInterest)
+            {
+                if (checker < 0)
+                {
+                    item.SubjectTopicsDisplay2 = "";
+                    item.SubjectTopicsDisplay3 = "";
+                    checker = 0;
+                }
+                else if (checker == 0)
+                {
+                    item.SubjectTopicsDisplay1 = "";
+                    item.SubjectTopicsDisplay3 = "";
+                    checker = 1;
+                }
+                else if (checker > 0)
+                {
+                    item.SubjectTopicsDisplay1 = "";
+                    item.SubjectTopicsDisplay2 = "";
+                    checker = -1;
+                }
+
+            }//TODO Fix
+        }
+
     }
    
 }

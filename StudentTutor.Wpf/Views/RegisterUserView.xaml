@@ -74,8 +74,39 @@
                         </Button>
                     </StackPanel>
                 </StackPanel>
-                <TextBox Text="{Binding SubjectOfInterest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="350" Height="100" Margin="0 40 0 0"/>
-                <ComboBox Margin="20"></ComboBox>
+                <ListBox ItemsSource="{Binding SubjectOfInterest}" Width="350" Height="100" Margin="0 40 0 0">
+                    <!--<ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" IsItemsHost="True" >
+                               
+                            </WrapPanel>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>-->
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                                <Border Background="LightGray" CornerRadius="15,15,15,15" Margin="10 5 0 0" Padding="5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Background="LightGray" Text="{Binding Path=SubjectTopicsDisplay, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 10 0" Width="100" TextTrimming="WordEllipsis"/>
+                                    <Button mvx:Bi.nd="Command RemoveSelectedSubject;" Content="X" BorderThickness="0" Foreground="OrangeRed" VerticalAlignment="Top" FontSize="12"/>
+                                    </StackPanel>
+                                </Border>
+                                <!--<TextBlock Background="LightGray" Text="{Binding Path=SubjectTopicsDisplay1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 10 0" Width="100" TextTrimming="WordEllipsis"/>
+                                <TextBlock Background="LightGray" Text="{Binding Path=SubjectTopicsDisplay2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 10 0" Width="100"  Visibility="Hidden" TextTrimming="WordEllipsis"/>
+                                <TextBlock Background="LightGray" Text="{Binding Path=SubjectTopicsDisplay3, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 10 0" Width="100"  Visibility="Collapsed" TextTrimming="WordEllipsis"/>-->
+                             </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                </ListBox>
+                <ComboBox ItemsSource="{Binding SubjectsAndNotes}" Margin="20" SelectedItem="{Binding SelectedSubjectsAndNote}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=SubjectTopics, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 10 0"/>
+                                <TextBlock Text="{Binding Path=NoteToDisplay, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" FontSize="12" VerticalAlignment="Bottom"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </StackPanel>
         </StackPanel>
     </Grid>

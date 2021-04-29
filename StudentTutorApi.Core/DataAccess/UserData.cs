@@ -16,6 +16,11 @@ namespace StudentTutorApi.Core.DataAccess
         {
             this._config = config;
         }
+        #region
+        /// <summary>
+        /// HttpGet queries
+        /// </summary>
+        /// <param name="Id"> Optional</param>
         public List<UserModel> GetUserById(string Id)
         {
             SqlDataAccess sqlDataAccess = new SqlDataAccess(_config);
@@ -25,7 +30,16 @@ namespace StudentTutorApi.Core.DataAccess
 
             return output;
         }
+        public List<SubjectOfInterestModel> GetSubjectOfInterest()
+        {
+            SqlDataAccess sqlDataAccess = new SqlDataAccess(_config);
 
+            var output = sqlDataAccess.LoadData<SubjectOfInterestModel, dynamic>("dbo.SubjectOfInterest_GetAll", null, "UsersConnection");
+
+            return output;
+        }
+
+        #endregion
         public async Task SaveUser(UserAccountBindingModel userAccount)
         {
             SqlDataAccess sql = new SqlDataAccess(_config);

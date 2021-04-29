@@ -31,6 +31,11 @@ namespace TutorsNetworkApi.Controllers.User
             this._userManager = userManager;
             this._context = context;
         }
+        #region
+        /// <summary>
+        /// Logic for querying User Db. rather than Authentication Db
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetById()
         {
@@ -39,7 +44,18 @@ namespace TutorsNetworkApi.Controllers.User
 
             return Ok(data.GetUserById(userId));
         }
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetSubjectOfInterest")]
+        public IActionResult GetSubjectOfInterest()
+        {
+            UserData data = new UserData(_config);
 
+            var i = data.GetSubjectOfInterest();
+            return Ok(i);
+        }
+
+        #endregion
         [HttpGet]
         [Route("GetId")]
         public IActionResult GetId()

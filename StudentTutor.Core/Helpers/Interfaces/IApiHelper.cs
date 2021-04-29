@@ -12,5 +12,7 @@ namespace StudentTutor.Core.Helpers.Interfaces
         Task GetLoggedInUserData(string token);
 
         Task<byte> AddDefaultRole(string token);
+
+        Task GetSubjectOfInterest();
     }
 }
