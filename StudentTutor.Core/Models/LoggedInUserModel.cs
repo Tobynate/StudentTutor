@@ -1,5 +1,6 @@
 ﻿using StudentTutor.Core.Models.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace StudentTutor.Core.Models
@@ -11,7 +12,7 @@ namespace StudentTutor.Core.Models
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
         public string Address { get; set; }
-        public string SubjectOfInterest { get; set; }
+       // public string SubjectOfInterest { get; set; }
         public byte[] Passport { get; set; }
         public DateTime CreatedDate { get; set; }
         public string Token { get; set; }
@@ -22,4 +23,5 @@ namespace StudentTutor.Core.Models
         //    return Encoding.ASCII.GetBytes(Passport);
         //}
     }
+
 }

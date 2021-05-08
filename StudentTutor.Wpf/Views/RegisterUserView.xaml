@@ -62,7 +62,7 @@
                     </Border>
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center"  Margin="20 0 0 0">
                         <Button mvx:Bi.nd="Command Upload;" Content="Upload" Background="FloralWhite" Foreground="CornflowerBlue" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20 6" Margin="0 0 0 20" Cursor="Hand" />
-                        <Button mvx:Bi.nd="Command CLear;" Content="Clear" Background="FloralWhite" Foreground="CornflowerBlue" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20 6" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
+                        <Button mvx:Bi.nd="Command Clear;" Content="Clear" Background="FloralWhite" Foreground="CornflowerBlue" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20 6" Cursor="Hand" RenderTransformOrigin="0.5,0.5">
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -74,30 +74,22 @@
                         </Button>
                     </StackPanel>
                 </StackPanel>
-                <ListBox ItemsSource="{Binding SubjectOfInterest}" Width="350" Height="100" Margin="0 40 0 0">
-                    <!--<ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" IsItemsHost="True" >
-                               
-                            </WrapPanel>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>-->
+                <ListBox x:Name="subjectOfInterestList" ItemsSource="{Binding SubjectOfInterest}" SelectedItem="{Binding SelectedSubjectOfInterest}" Width="350" Height="110" Margin="0 40 0 0">
+                    
                     <ListBox.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate >
                                 <Border Background="LightGray" CornerRadius="15,15,15,15" Margin="10 5 0 0" Padding="5">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Background="LightGray" Text="{Binding Path=SubjectTopicsDisplay, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 10 0" Width="100" TextTrimming="WordEllipsis"/>
-                                    <Button mvx:Bi.nd="Command RemoveSelectedSubject;" Content="X" BorderThickness="0" Foreground="OrangeRed" VerticalAlignment="Top" FontSize="12"/>
+                                    <Button x:Name="removeButton" Click="removeButton_Click" Command="{Binding DataContext.Remove,RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBox}}}" Content="X" BorderThickness="0" Foreground="OrangeRed" VerticalAlignment="Top" FontSize="12"/>
                                     </StackPanel>
                                 </Border>
-                                <!--<TextBlock Background="LightGray" Text="{Binding Path=SubjectTopicsDisplay1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 10 0" Width="100" TextTrimming="WordEllipsis"/>
-                                <TextBlock Background="LightGray" Text="{Binding Path=SubjectTopicsDisplay2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 10 0" Width="100"  Visibility="Hidden" TextTrimming="WordEllipsis"/>
-                                <TextBlock Background="LightGray" Text="{Binding Path=SubjectTopicsDisplay3, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 10 0" Width="100"  Visibility="Collapsed" TextTrimming="WordEllipsis"/>-->
-                             </DataTemplate>
+                        </DataTemplate>
+                        
                     </ListBox.ItemTemplate>
                     
                 </ListBox>
-                <ComboBox ItemsSource="{Binding SubjectsAndNotes}" Margin="20" SelectedItem="{Binding SelectedSubjectsAndNote}">
+                <ComboBox ItemsSource="{Binding SubjectsAndNotes}" IsTextSearchCaseSensitive="False" IsTextSearchEnabled="True" TextSearch.TextPath="{Binding SubjectsAndNotes}" IsEditable="True" IsReadOnly="False" Margin="20" SelectedItem="{Binding SelectedSubjectsAndNote}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">

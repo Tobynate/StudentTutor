@@ -88,16 +88,11 @@ namespace TutorsNetworkApi.Controllers.User
         [AllowAnonymous]
         [Route("Register")]
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterBindingModel model, string password)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        public async Task<IActionResult> Register(string username, string password)
+        {            
+            var user = new IdentityUser() { UserName = username, Email = username };
 
-            var user = new IdentityUser() { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
-
-            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+            IdentityResult result = await _userManager.CreateAsync(user, password);
 
             if (!result.Succeeded)
             {

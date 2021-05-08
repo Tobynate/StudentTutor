@@ -1,4 +1,6 @@
 ﻿using StudentTutor.Core.Models;
+using StudentTutor.Core.Models.Interfaces;
+using System.Net;
 using System.Net.Http;
 using System.Security;
 using System.Threading.Tasks;
@@ -14,5 +16,6 @@ namespace StudentTutor.Core.Helpers.Interfaces
         Task<byte> AddDefaultRole(string token);
 
         Task GetSubjectOfInterest();
+        Task<HttpStatusCode> RegisterUser(IUserRegistrationTrModel registrationTrModel, SecureString securePassword, SecureString confirmPassword);
     }
 }

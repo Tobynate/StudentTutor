@@ -12,7 +12,7 @@ namespace StudentTutor.Core.Models.Interfaces
         string Id { get; set; }
         string LastName { get; set; }
         byte[] Passport { get; set; }
-        string SubjectOfInterest { get; set; }
+        //string SubjectOfInterest { get; set; }
         //byte[] PassportAsBytes();
     }
 }

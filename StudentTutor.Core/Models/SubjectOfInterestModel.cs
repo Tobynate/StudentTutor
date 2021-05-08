@@ -49,8 +49,7 @@ namespace StudentTutor.Core.Models
                 _subjectTopicsDisplay = value; 
             }
         }
-
-
+       
         private string _subjectTopicsDisplay1;
         public string SubjectTopicsDisplay1
         {

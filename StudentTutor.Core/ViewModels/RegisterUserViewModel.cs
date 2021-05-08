@@ -17,23 +17,30 @@ using System.Drawing;
 using StudentTutor.Core.Models.Interfaces;
 using StudentTutor.Core.Helpers.Interfaces;
 using System.Linq;
+using System.Linq.Expressions;
+using MvvmCross.Navigation;
 
 namespace StudentTutor.Core.ViewModels
 {
     public class RegisterUserViewModel : MvxViewModel
     {
+        private readonly IMvxNavigationService _mvxNavigation;
         private readonly ISubjectOfInterestModelList _subjectsOfInterest;
         private readonly ISubjectOfInterestModel _subjectOfInterestModel;
         private readonly IApiHelper _apiHelper;
+        private readonly IUserRegistrationTrModel _registrationTrModel;
 
-        public RegisterUserViewModel(ISubjectOfInterestModelList subjectsOfInterestModel, ISubjectOfInterestModel subjectOfInterestModel, IApiHelper apiHelper)
+        public RegisterUserViewModel(IMvxNavigationService mvxNavigation, ISubjectOfInterestModelList subjectsOfInterestModel, ISubjectOfInterestModel subjectOfInterestModel, IApiHelper apiHelper, IUserRegistrationTrModel registrationTrModel)
         {
             this._apiHelper = apiHelper;
+            this._registrationTrModel = registrationTrModel;
             Passport = GetImage(Resources.Female_Icon, Passport);
 
             OperatingSystem operatingSystem = Environment.OSVersion;
 
             Upload = new MvxCommand(UploadCommand);
+            Remove = new MvxCommand(RemoveSelectedSubjectCommand);/*MvxAsyncCommand*/
+            this._mvxNavigation = mvxNavigation;
             this._subjectsOfInterest = subjectsOfInterestModel;
             this._subjectOfInterestModel = subjectOfInterestModel;
 
@@ -46,12 +53,12 @@ namespace StudentTutor.Core.ViewModels
         {
             await _apiHelper.GetSubjectOfInterest();
         }
+
         private MvxInteraction<FileDialogInteraction> _interaction = new MvxInteraction<FileDialogInteraction>();
 
         public IMvxInteraction<FileDialogInteraction> Interaction => _interaction;
 
         public MvxCommand Upload { get; set; }
-
 
         #region
         /// <summary>
@@ -126,6 +133,47 @@ namespace StudentTutor.Core.ViewModels
 
         #endregion
 
+        #region
+        /// <summary>
+        /// MvxInteraction to remove Selected Subject of interest
+        /// </summary>
+        private MvxInteraction<RemoveSelectedSubjectInteraction> _subjectInteraction = new MvxInteraction<RemoveSelectedSubjectInteraction>();
+
+        public IMvxInteraction<RemoveSelectedSubjectInteraction> SubjectInteraction => _subjectInteraction;
+
+        public MvxCommand Remove { get; set; }
+
+        private /*async Task*/void RemoveSelectedSubjectCommand()
+        {
+            byte status = 0;
+            var request = new RemoveSelectedSubjectInteraction
+            {
+                SubjectSelected = async (ok) =>
+                {
+                    if (ok)
+                    {
+                        status = 1;
+                    }
+                    else
+                    {
+                        status = 0;
+                    }
+
+                },
+            };
+
+            _subjectInteraction.Raise(request);
+            if (status == 1)
+            {
+                /*await Task.Run(() => */
+                SubjectsAndNotes.Add(SelectedSubjectOfInterest);//);
+                /*await Task.Run(() => */
+                SubjectOfInterest.Remove(SelectedSubjectOfInterest);//);
+                SelectedSubjectsAndNote = null;
+            }
+        }
+
+        #endregion
 
         private void UploadCommand()
         {
@@ -255,7 +303,6 @@ namespace StudentTutor.Core.ViewModels
                 SetProperty(ref _subjectOfInterest, value);
             }
         }
-        int checker = -1;
 
         private SubjectOfInterestModel _selectedSubjectsAndNote;
 
@@ -266,7 +313,7 @@ namespace StudentTutor.Core.ViewModels
             {
                 SetProperty(ref _selectedSubjectsAndNote, value);
 
-                if (SelectedSubjectsAndNote != null)
+                if (SelectedSubjectsAndNote != null && !SubjectOfInterest.Contains(SelectedSubjectsAndNote))
                 {
                     SubjectsAndNotes.Remove(SelectedSubjectsAndNote);
                     SubjectOfInterest.Add(SelectedSubjectsAndNote);
@@ -275,34 +322,56 @@ namespace StudentTutor.Core.ViewModels
                 //PopulateSubjectOfInterest();
             }
         }
-        private void PopulateSubjectOfInterest()
-        {
-            SubjectOfInterest.AllowEdit = true;
-           
-            foreach (SubjectOfInterestModel item in SubjectOfInterest)
-            {
-                if (checker < 0)
-                {
-                    item.SubjectTopicsDisplay2 = "";
-                    item.SubjectTopicsDisplay3 = "";
-                    checker = 0;
-                }
-                else if (checker == 0)
-                {
-                    item.SubjectTopicsDisplay1 = "";
-                    item.SubjectTopicsDisplay3 = "";
-                    checker = 1;
-                }
-                else if (checker > 0)
-                {
-                    item.SubjectTopicsDisplay1 = "";
-                    item.SubjectTopicsDisplay2 = "";
-                    checker = -1;
-                }
 
-            }//TODO Fix
+        private SubjectOfInterestModel _selectedSubjectOfInterest;
+
+        public SubjectOfInterestModel SelectedSubjectOfInterest
+        {
+            get { return _selectedSubjectOfInterest; }
+            set 
+            {
+                SetProperty(ref _selectedSubjectOfInterest, value);
+            }
+        }
+        private async Task<KeyValuePair<string,bool>> ValidateSubmit(params object[] modelItem)
+        {
+            for (int i = 0; i < modelItem.Length; i+=2)
+            {
+                if (modelItem[i] is string && string.IsNullOrEmpty((string)modelItem[i]) || (string)modelItem[i] == (string)modelItem[i +1])
+                {
+                    return await Task.Run(() => new KeyValuePair<string, bool>((string)modelItem[i + 1], false));
+                }
+            }
+            return await Task.Run(() => new KeyValuePair<string, bool>("default", true));
         }
 
+        public IMvxAsyncCommand Submit => new MvxAsyncCommand(SubmitCommand);
+
+        private async Task SubmitCommand()
+        {
+            UserRegistrationModel registrationModel = new UserRegistrationModel();
+
+            registrationModel.Address = Address;
+            registrationModel.CreatedDate = DateTime.UtcNow;
+            registrationModel.EmailAddress = EmailAddress;
+            registrationModel.FirstName = FirstName;
+            registrationModel.LastName = LastName;
+            // registrationModel.Passport = Passport;
+            var output = await ValidateSubmit(registrationModel.Address, "Address", registrationModel.EmailAddress, "Email Address", registrationModel.FirstName, "Firstname", registrationModel.LastName, "Lastname");
+            if (output.Value)
+            {
+                _registrationTrModel.userModel = registrationModel;
+                _registrationTrModel.Passport = Passport;
+                _registrationTrModel.SubjectOfInterest = SubjectOfInterest;
+
+                await _mvxNavigation.Navigate<SubmitPasswordViewModel>();
+            }
+            else
+            {//TODO create error display method
+                string errorMsg = "Invalid value input for " + output.Key;
+            }
+
+        }
     }
    
 }

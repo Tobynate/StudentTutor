@@ -29,6 +29,7 @@ namespace StudentTutor.Core
             Mvx.IoCProvider.LazyConstructAndRegisterSingleton<ILoggedInUserModel, LoggedInUserModel>();
             Mvx.IoCProvider.LazyConstructAndRegisterSingleton<ISubjectOfInterestModel, SubjectOfInterestModel>();
             Mvx.IoCProvider.LazyConstructAndRegisterSingleton<ISubjectOfInterestModelList, SubjectOfInterestModelList>();
+            Mvx.IoCProvider.LazyConstructAndRegisterSingleton<IUserRegistrationTrModel, UserRegistrationTrModel>();
 
             // Mvx.IoCProvider.IoCConstruct(typeof(IConfiguration), "IConfiguration", AddConfiguration());
             // Mvx.IoCConstruct<IConfiguration>(AddConfiguration());

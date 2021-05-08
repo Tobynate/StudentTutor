@@ -32,6 +32,8 @@ namespace StudentTutor.Wpf.Views
             InitializeComponent();
             var set = this.CreateBindingSet<RegisterUserView, RegisterUserViewModel>();
             set.Bind(this).For(view => view.Interaction).To(viewModel => viewModel.Interaction).OneWay();
+            set.Bind(this).For(view => view.SubjectInteraction).To(viewModel => viewModel.SubjectInteraction).OneWay();
+
             set.Apply();
         }
         private IMvxInteraction<FileDialogInteraction> _interaction;
@@ -68,7 +70,40 @@ namespace StudentTutor.Wpf.Views
                 dialogInteraction.SelectedFile(status == true);
             }
         }
-        
+                
+        private IMvxInteraction<RemoveSelectedSubjectInteraction> _subjectInteraction;
+        public IMvxInteraction<RemoveSelectedSubjectInteraction> SubjectInteraction
+        {
+            get => _subjectInteraction;
+            set
+            {
+                if (_subjectInteraction != null)
+                    _subjectInteraction.Requested -= Cancel_Click;
 
+                if (value != null)
+                {
+                    _subjectInteraction = value;
+                    _subjectInteraction.Requested += Cancel_Click;
+                }
+            }
+        }
+
+        private async void Cancel_Click(object sender, MvxValueEventArgs<RemoveSelectedSubjectInteraction> e)
+        {
+            ListBoxItem selectedItem = (ListBoxItem)subjectOfInterestList.ItemContainerGenerator.
+                                       ContainerFromItem(((Button)passedObject).DataContext);
+            selectedItem.IsSelected = true;
+
+            var cancelInteraction = e.Value;
+
+            cancelInteraction.SubjectSelected(selectedItem.IsSelected);
+
+            passedObject = null;
+        }
+        private static Object passedObject; 
+        private void removeButton_Click(object sender, EventArgs e)
+        {
+            passedObject = sender;
+        }
     }
 }

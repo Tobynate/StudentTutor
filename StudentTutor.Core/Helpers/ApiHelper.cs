@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
@@ -77,8 +78,7 @@ namespace StudentTutor.Core.Helpers
             try
             {
                 valuePtr = Marshal.SecureStringToGlobalAllocUnicode(value);
-                var output = Marshal.PtrToStringUni(valuePtr);
-                return output;
+                return Marshal.PtrToStringUni(valuePtr);
             }
             finally
             {
@@ -168,7 +168,7 @@ namespace StudentTutor.Core.Helpers
                     _loggedInUser.Id = result[0].Id;
                     _loggedInUser.LastName = result[0].LastName;
                     _loggedInUser.Passport = result[0].Passport;
-                    _loggedInUser.SubjectOfInterest = result[0].SubjectOfInterest;
+                   // _loggedInUser.SubjectOfInterest = result[0].SubjectOfInterest;
                     _loggedInUser.Token = token;
 
                 }
@@ -179,6 +179,35 @@ namespace StudentTutor.Core.Helpers
                 }
             }
 
+        }
+
+        public async Task<HttpStatusCode> RegisterUser(IUserRegistrationTrModel registrationTrModel, SecureString securePassword, SecureString confirmPassword)
+        {
+            InitializeClientWithAuth(apiClient, "application/json", null);
+            if (SecureStringToString(securePassword) == SecureStringToString(confirmPassword))
+            {
+                var data = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string, string>("username", registrationTrModel.userModel.EmailAddress),
+                        new KeyValuePair<string, string>("password", SecureStringToString(securePassword))
+
+                    });
+                using (HttpResponseMessage response = await apiClient.PostAsJsonAsync("api/User/RegisterUser", data ))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return response.StatusCode;
+                    }
+                    else
+                    {
+                        throw new Exception(response.ReasonPhrase);
+                    }
+                } 
+            }
+            else
+            {
+                throw new Exception("Password and Confirm Password do not match");
+            }
         }
     }
 }

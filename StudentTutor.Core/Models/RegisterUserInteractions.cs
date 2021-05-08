@@ -10,4 +10,8 @@ namespace StudentTutor.Core.Models
         public Action<bool> SelectedFile { get; set; }
         public FileInfo File { get; set; }
     }
+    public class RemoveSelectedSubjectInteraction
+    {
+        public Action<bool> SubjectSelected { get; set; }
+    }
 }
