@@ -192,7 +192,9 @@ namespace StudentTutor.Core.Helpers
                         new KeyValuePair<string, string>("password", SecureStringToString(securePassword))
 
                     });
-                using (HttpResponseMessage response = await apiClient.PostAsJsonAsync("api/User/RegisterUser", data ))
+                registrationTrModel.EncodedContent = data;
+
+                using (HttpResponseMessage response = await apiClient.PostAsJsonAsync("api/User/Register", registrationTrModel))
                 {
                     if (response.IsSuccessStatusCode)
                     {

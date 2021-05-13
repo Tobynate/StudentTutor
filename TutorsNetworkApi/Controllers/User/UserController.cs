@@ -88,9 +88,23 @@ namespace TutorsNetworkApi.Controllers.User
         [AllowAnonymous]
         [Route("Register")]
         [HttpPost]
-        public async Task<IActionResult> Register(string username, string password)
-        {            
-            var user = new IdentityUser() { UserName = username, Email = username };
+        public async Task<IActionResult> Register(Object userRegistrationModel)
+           {
+            //var user = new IdentityUser() { UserName = userRegistrationModel.EmailAddress, Email = userRegistrationModel.EmailAddress };
+            //var str = userRegistrationModel.EncodedAuthContent.ReadAsStringAsync();
+            //IActionResult result = await RegisterUser(user, "password");
+            //if (result != Ok())
+            //{
+            //    return result;
+            //}
+            //result = await SaveUserData(new UserAccountBindingModel());//TODO fix this
+            
+            //var IsSucess = await ConfirmEmailLogic(user, "password");
+
+            return Ok();
+        }
+        private async Task<IActionResult> RegisterUser(IdentityUser user, string password)
+        {
 
             IdentityResult result = await _userManager.CreateAsync(user, password);
 
@@ -98,17 +112,14 @@ namespace TutorsNetworkApi.Controllers.User
             {
                 return GetErrorResult(result);
             }
-            var IsSucess = await ConfirmEmailLogic(user, password);
-
             return Ok();
         }
-        [Route("SaveUserData")]
-        [HttpPost]
-        public async Task<IActionResult> SaveUserData(UserAccountBindingModel userAccount)
+        
+        private async Task<IActionResult> SaveUserData(UserAccountBindingModel userAccount)
         {
             UserData data = new UserData(_config);
 
-            return Ok(data.SaveUser(userAccount));
+            return Ok(Task.Run(()=> data.SaveUser(userAccount)));
         }
         private async Task<bool> ConfirmEmailLogic(IdentityUser user, string password)
         {

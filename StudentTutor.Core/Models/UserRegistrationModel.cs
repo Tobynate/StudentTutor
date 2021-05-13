@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Net.Http;
 using System.Text;
 using System.Windows.Media.Imaging;
 
@@ -21,6 +22,7 @@ namespace StudentTutor.Core.Models
         public UserRegistrationModel userModel { get; set; }
         public BitmapSource Passport { get; set; }
         public BindingList<SubjectOfInterestModel> SubjectOfInterest { get; set; }
+        public FormUrlEncodedContent EncodedContent { get; set; }
 
     }
     public class UserSubjectsOfInterestModel

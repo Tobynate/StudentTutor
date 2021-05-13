@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Net.Http;
 using System.Windows.Media.Imaging;
 
 namespace StudentTutor.Core.Models.Interfaces
@@ -8,5 +9,6 @@ namespace StudentTutor.Core.Models.Interfaces
         BitmapSource Passport { get; set; }
         UserRegistrationModel userModel { get; set; }
         BindingList<SubjectOfInterestModel> SubjectOfInterest { get; set; }
+        FormUrlEncodedContent EncodedContent { get; set; }
     }
 }
